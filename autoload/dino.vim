@@ -10,26 +10,11 @@ let s:cacti_space_max = 50
 let s:cacti_space = s:cacti_space_max
 let s:left_bias  = 10
 let s:right_bias = 3
-""" DEBUG START
-let s:debug = 0
-""" DEBUG END
 
 let s:space_keycode = get(g:, 'dino_space_keycode', 32)
 let s:q_keycode = get(g:, 'dino_q_keycode', 113)
 
 let s:dino = [0,0,0,0]
-""" DEBUG START
-if s:debug >= 1
-    let s:dino[0] =<< EOL
-      ABCDEFG
-QP   ONMLKJIH
-RSTUVWXYZabc
- defghijkl
-  mnopqrs
-   tu VW
-EOL
-else
-""" DEBUG END
 let s:dino[0] =<< EOL
        |o||||\
 \\    |||||__
@@ -38,22 +23,7 @@ let s:dino[0] =<< EOL
    |||||||
     '' ||
 EOL
-""" DEBUG START
-endif
-""" DEBUG END
 
-""" DEBUG START
-if s:debug >= 1
-    let s:dino[1] =<< EOL
-      ABCDEFG
-QP   ONMLKJIH
-RSTUVWXYZabc
- defghijkl
-  mnopqrs
-   TU vw
-EOL
-else
-""" DEBUG END
 let s:dino[1] =<< EOL
        |o||||\
 \\    |||||__
@@ -62,9 +32,6 @@ let s:dino[1] =<< EOL
    |||||||
     || ''
 EOL
-""" DEBUG START
-endif
-""" DEBUG END
 
 let s:dino[2] =<< EOL
        |o||||\
@@ -87,25 +54,12 @@ EOL
 let s:dino_height = len(s:dino[0])
 let s:dino_width  = len(s:dino[0][0])
 
-""" DEBUG START
-if s:debug >= 1
-    let s:cactus1 =<< EOL
-  012  
-3 456 7
-89?0?1?
-  2?3  
-EOL
-else
-""" DEBUG END
 let s:cactus1 =<< EOL
   |||  
 | ||| |
 |||||||
   |||  
 EOL
-""" DEBUG START
-endif
-""" DEBUG END
 
 let s:cactus2 =<< EOL
   ||  ||  
@@ -175,11 +129,6 @@ function! dino#run_dino()
                 let s:jump_index += 1
             endif
         endif
-        """ DEBUG START
-        if s:debug >= 1
-            let show_field[0] .= 'j'.jump_height.' '
-        endif
-        """ DEBUG END
 
         " show dino
         for i in range(stage_height-1)
@@ -216,45 +165,18 @@ function! dino#run_dino()
                     let cindex = s:cacti_space+j+1
                     if cindex >= s:dino_width+s:left_bias
                         let show_field[findex] .= cactus[i][j]
-                        """ DEBUG START
-                        if s:debug >= 2
-                            let show_field[0] .= 1
-                        endif
-                        """ DEBUG END
                     else
                         if (cactus[i][j]!=' ') && (show_field[findex][cindex]!=' ')
                             let is_hit = 1
-                            """ DEBUG START
-                            if s:debug >= 2
-                                let show_field[0] .= 2
-                                " let show_field[0] .= 2.'('.findex.'/'.cindex.')'
-                                " let show_field[0] .= 2.'('.show_field[findex][cindex].')'
-                            endif
-                            """ DEBUG END
                         elseif show_field[findex][cindex] == ' '
                             let new_line = show_field[findex][:cindex-1].cactus[i][j].show_field[findex][cindex+1:]
                             let show_field[findex] = new_line
-                            """ DEBUG START
-                            if s:debug >= 2
-                                let show_field[0] .= 3
-                            endif
-                            """ DEBUG END
                         else
-                            """ DEBUG START
-                            if s:debug >= 2
-                                let show_field[0] .= 4
-                            endif
-                            """ DEBUG END
                         endif
                     endif
                 endfor
             endfor
         endif
-        """ DEBUG START
-        if s:debug >= 1
-            let show_field[0] .= '~~'.s:cacti_space
-        endif
-        """ DEBUG END
 
         if is_hit == 1
             for i in range(len(show_field))
@@ -279,16 +201,6 @@ function! dino#run_dino()
         endfor
 
         sleep 100ms
-        """ DEBUG START
-        if s:debug == 1
-            sleep 1
-        elseif s:debug >= 2
-            let q = input(':')
-            if q == 'q'
-                break
-            endif
-        endif
-        """ DEBUG END
 
         if is_hit == 1
             let s:jump_index = 0
